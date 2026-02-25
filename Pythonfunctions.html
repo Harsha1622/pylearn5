@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Functions in Python</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+  font-weight:700;
+}
+
+/* NAV */
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE (hidden until login) */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  border:none;
+  background:none;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+  color:#374151;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* CONTENT */
+.container{
+  max-width:900px;
+  margin:50px auto;
+  background:white;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.container h3{
+  margin-bottom:15px;
+  font-size:26px;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section h4{
+  margin-bottom:10px;
+  font-size:18px;
+  color:#2563eb;
+}
+
+.section p{
+  line-height:1.7;
+  font-size:15px;
+}
+
+/* CODE */
+pre{
+  background:#111827;
+  color:#e5e7eb;
+  padding:20px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin-top:10px;
+}
+
+code{
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+/* OUTPUT */
+.output{
+  background:#f9fafb;
+  border:1px solid #d1d5db;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+  font-family:Consolas, monospace;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+
+  <h3>Functions in Python</h3>
+
+  <div class="section">
+    <h4>Definition of Function</h4>
+    <p>
+      A function is a block of reusable code that performs a specific task.
+      Functions help reduce code repetition, improve readability,
+      and make programs easier to maintain.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Why Functions are Used?</h4>
+    <p>
+      ✔ To reuse code multiple times.<br>
+      ✔ To reduce program size.<br>
+      ✔ To make programs modular and structured.<br>
+      ✔ To simplify debugging and testing.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Syntax of a Function</h4>
+    <pre><code>
+def function_name():
+    statements
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h4>Sample Program: Simple Function</h4>
+    <pre><code>
+def greet():
+    print("Welcome to Python")
+
+greet()
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h4>Output</h4>
+    <div class="output">
+      Welcome to Python
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Types of Functions in Python</h4>
+    <p>
+      ✔ Built-in Functions<br>
+      ✔ User-defined Functions
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Built-in Functions</h4>
+    <pre><code>
+print("Python")
+length = len("PyLearn")
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h4>User-defined Functions</h4>
+    <pre><code>
+def add_numbers(a, b):
+    return a + b
+
+result = add_numbers(10, 20)
+print(result)
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h4>Output</h4>
+    <div class="output">
+      30
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+fetch(API + "/dashboard", { credentials:"include" })
+.then(res=>{
+  if(res.ok){
+    document.getElementById("profileMenu").style.display="flex";
+  }
+});
+
+function logout(){
+  fetch(API + "/logout", {
+    method:"POST",
+    credentials:"include"
+  }).then(()=>{
+    window.location.href="home.html";
+  });
+}
+</script>
+
+</body>
+</html>

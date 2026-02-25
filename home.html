@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn – Online Learning</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+}
+
+nav a{
+  margin-left:25px;
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  margin-left:25px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  margin-right:8px;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:80px 70px;
+  gap:60px;
+}
+
+.hero-text{
+  max-width:520px;
+}
+
+.hero-text h2{
+  font-size:40px;
+  margin-bottom:20px;
+}
+
+.hero-text p{
+  color:#6b7280;
+  margin-bottom:30px;
+}
+
+.hero-text button{
+  padding:14px 32px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* LOGIN CARD */
+.login-card{
+  background:white;
+  padding:35px;
+  width:380px;
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+.login-card h3{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.login-card input{
+  width:100%;
+  padding:14px;
+  margin-bottom:18px;
+  border-radius:8px;
+  border:1px solid #d1d5db;
+}
+
+.login-card button{
+  width:100%;
+  padding:14px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.login-card p{
+  text-align:center;
+  margin-top:18px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{
+    flex-direction:column;
+    padding:50px 30px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="course.html">Courses</a>
+
+    <!-- PROFILE (LOGGED IN ONLY) -->
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+
+  <div class="hero-text">
+    <h2>Learn Python with PyLearn</h2>
+    <p>Structured content, quizzes, and progress tracking for students.</p>
+    <a href="course.html"><button>Start Learning</button></a>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="login-card" id="loginCard">
+    <h3>Student Login</h3>
+
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <p>New here? <a href="signup.html">Create an account</a></p>
+  </div>
+
+</section>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+/* LOGIN */
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const res = await fetch(API + "/login", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    credentials: "include",
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
+
+  if(res.ok){
+    location.reload();
+  }else{
+    alert("Invalid login");
+  }
+});
+
+/* SESSION CHECK */
+fetch(API + "/dashboard", {
+  credentials: "include"
+})
+.then(res => {
+  if(res.ok){
+    document.getElementById("profileMenu").style.display = "flex";
+    document.getElementById("loginCard").style.display = "none";
+  }
+});
+
+/* LOGOUT */
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => location.reload());
+}
+</script>
+
+</body>
+</html>

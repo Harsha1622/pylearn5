@@ -1,0 +1,232 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Course Progress</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+/* PROFILE */
+.profile{
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:160px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a{
+  padding:12px 15px;
+  text-decoration:none;
+  color:#374151;
+  font-size:14px;
+}
+
+.profile-menu a:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* MAIN */
+.container{
+  max-width:800px;
+  margin:70px auto;
+  background:white;
+  padding:45px;
+  border-radius:16px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+  text-align:center;
+}
+
+/* ICON */
+.badge{
+  width:90px;
+  height:90px;
+  margin:0 auto 20px;
+  background:#2563eb;
+  color:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  font-weight:600;
+}
+
+/* TEXT */
+.container h3{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.container p{
+  font-size:16px;
+  line-height:1.8;
+  margin-top:12px;
+  color:#374151;
+}
+
+.highlight{
+  color:#2563eb;
+  font-weight:600;
+}
+
+/* ACTIONS */
+.actions{
+  margin-top:35px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+.actions a{
+  text-decoration:none;
+  padding:12px 22px;
+  border-radius:8px;
+  font-weight:500;
+  font-size:15px;
+}
+
+.primary{
+  background:#2563eb;
+  color:white;
+}
+
+.secondary{
+  border:1px solid #2563eb;
+  color:#2563eb;
+}
+
+/* NOTE */
+.note{
+  margin-top:25px;
+  font-size:14px;
+  color:#6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Course</a>
+
+    <div class="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Student">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+
+  <div class="badge">★</div>
+
+  <h3>Great Progress, <span class="highlight" id="studentName">Student</span>!</h3>
+
+  <p>
+    You've successfully completed a major portion of the  
+    <span class="highlight">Python Programming Course</span>.
+  </p>
+
+  <p>
+    Core topics like basics, file handling, and exception handling  
+    are now part of your skill set.
+  </p>
+
+  <p>
+    Advanced concepts such as  
+    <strong>Object-Oriented Programming (OOP)</strong>  
+    are still in progress -- keep going.
+  </p>
+
+  <div class="actions">
+    <a href="dashboard.html" class="primary">Continue Learning</a>
+    <a href="courses.html" class="secondary">Revise Topics</a>
+  </div>
+
+  <div class="note">
+    Progress matters more than speed. Stay consistent.
+  </div>
+
+</div>
+
+<script>
+/* Replace with backend session later */
+const studentName = "Harsha"; // dynamic later
+document.getElementById("studentName").innerText = studentName;
+
+function logout(){
+  alert("Logged out successfully");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

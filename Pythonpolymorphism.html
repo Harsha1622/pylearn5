@@ -1,0 +1,283 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SmartLearn | Polymorphism in Python</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+/* ================= HEADER ================= */
+header{
+  background:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+}
+
+/* NAV */
+nav{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+/* ===== STUDENT PROFILE ===== */
+.profile{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile span{
+  font-weight:500;
+}
+
+/* DROPDOWN */
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:10;
+}
+
+.profile-menu a{
+  padding:12px 15px;
+  text-decoration:none;
+  color:#374151;
+  font-size:14px;
+}
+
+.profile-menu a:hover{
+  background:#f3f4f6;
+}
+
+/* SHOW DROPDOWN */
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* ================= CONTENT ================= */
+.container{
+  max-width:900px;
+  margin:50px auto;
+  background:white;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.container h3{
+  margin-bottom:15px;
+  font-size:26px;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section h4{
+  margin-bottom:10px;
+  font-size:18px;
+  color:#2563eb;
+}
+
+.section p{
+  line-height:1.7;
+  font-size:15px;
+}
+
+/* CODE BOX */
+pre{
+  background:#111827;
+  color:#e5e7eb;
+  padding:20px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin-top:10px;
+}
+
+code{
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+/* OUTPUT BOX */
+.output{
+  background:#f9fafb;
+  border:1px solid #d1d5db;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+  font-family:Consolas, monospace;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <h2>SmartLearn</h2>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="courses.html">Courses</a>
+
+    <div class="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Student">
+      <span>Student</span>
+
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="container">
+
+  <h3>Polymorphism in Python</h3>
+
+  <div class="section">
+    <h4>What is Polymorphism?</h4>
+    <p>
+      <strong>Polymorphism</strong> means "many forms".
+      It allows the same method name to behave differently
+      depending on the object that is calling it.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Polymorphism in Python</h4>
+    <p>
+      Python supports polymorphism through
+      method overriding, operator overloading,
+      and functions that work with different data types.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Example: Polymorphism using Method Overriding</h4>
+    <pre><code>
+class Animal:
+    def sound(self):
+        print("Animal makes a sound")
+
+class Dog(Animal):
+    def sound(self):
+        print("Dog barks")
+
+class Cat(Animal):
+    def sound(self):
+        print("Cat meows")
+
+a1 = Dog()
+a2 = Cat()
+
+a1.sound()
+a2.sound()
+    </code></pre>
+
+    <div class="output">
+      Dog barks<br>
+      Cat meows
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Example: Polymorphism with Function</h4>
+    <pre><code>
+def add(a, b, c=0):
+    return a + b + c
+
+print(add(10, 20))
+print(add(10, 20, 30))
+    </code></pre>
+
+    <div class="output">
+      30<br>
+      60
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Example: Polymorphism with Built-in Functions</h4>
+    <pre><code>
+print(len("Python"))
+print(len([1, 2, 3, 4]))
+    </code></pre>
+
+    <div class="output">
+      6<br>
+      4
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Advantages of Polymorphism</h4>
+    <p>
+      ✔ Improves code flexibility<br>
+      ✔ Reduces code complexity<br>
+      ✔ Supports method overriding<br>
+      ✔ Makes code reusable and scalable
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Important Points</h4>
+    <p>
+      ✔ Same method name, different behavior<br>
+      ✔ Achieved using inheritance and overriding<br>
+      ✔ Python supports dynamic polymorphism<br>
+      ✔ One of the four pillars of OOP
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>

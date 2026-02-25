@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Scope of Variables in Python</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+/* ================= HEADER ================= */
+header{
+  background:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:160px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu button{
+  padding:12px 15px;
+  border:none;
+  background:none;
+  text-align:left;
+  cursor:pointer;
+  font-size:14px;
+  color:#374151;
+}
+
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* ================= CONTENT ================= */
+.container{
+  max-width:900px;
+  margin:50px auto;
+  background:white;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.container h3{
+  font-size:26px;
+  margin-bottom:20px;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section h4{
+  color:#2563eb;
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.section p{
+  font-size:15px;
+  line-height:1.7;
+}
+
+/* CODE */
+pre{
+  background:#111827;
+  color:#e5e7eb;
+  padding:20px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin-top:10px;
+}
+
+code{
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+/* OUTPUT */
+.output{
+  background:#f9fafb;
+  border:1px solid #d1d5db;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+  font-family:Consolas, monospace;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <h2>PyLearn</h2>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Student">
+      <div class="profile-menu">
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="container">
+
+  <h3>Scope of Variables in Python</h3>
+
+  <div class="section">
+    <h4>What is Variable Scope?</h4>
+    <p>
+      The <strong>scope of a variable</strong> refers to the part of the program
+      where the variable can be accessed. Python follows the LEGB rule
+      (Local, Enclosing, Global, Built-in) to decide scope.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Types of Variable Scope</h4>
+    <p>
+      ✔ Local Scope<br>
+      ✔ Global Scope<br>
+      ✔ Nonlocal Scope<br>
+      ✔ Built-in Scope
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>1. Local Scope</h4>
+    <p>
+      A variable declared inside a function is called a <strong>local variable</strong>.
+      It can be accessed only within that function.
+    </p>
+
+    <pre><code>
+def show():
+    x = 10
+    print(x)
+
+show()
+    </code></pre>
+
+    <div class="output">10</div>
+  </div>
+
+  <div class="section">
+    <h4>2. Global Scope</h4>
+    <p>
+      A variable declared outside all functions is called a
+      <strong>global variable</strong>. It can be accessed anywhere in the program.
+    </p>
+
+    <pre><code>
+x = 20
+
+def display():
+    print(x)
+
+display()
+    </code></pre>
+
+    <div class="output">20</div>
+  </div>
+
+  <div class="section">
+    <h4>3. Nonlocal Scope</h4>
+    <p>
+      The <strong>nonlocal</strong> keyword is used in nested functions
+      to modify a variable from the enclosing function.
+    </p>
+
+    <pre><code>
+def outer():
+    x = 30
+    def inner():
+        nonlocal x
+        x = 40
+    inner()
+    print(x)
+
+outer()
+    </code></pre>
+
+    <div class="output">40</div>
+  </div>
+
+  <div class="section">
+    <h4>4. Built-in Scope</h4>
+    <p>
+      Built-in scope contains predefined functions like
+      <strong>print()</strong>, <strong>len()</strong>, and <strong>type()</strong>.
+    </p>
+
+    <pre><code>
+print(len("Python"))
+    </code></pre>
+
+    <div class="output">6</div>
+  </div>
+
+  <div class="section">
+    <h4>Important Points</h4>
+    <p>
+      ✔ Local variables exist only inside functions<br>
+      ✔ Global variables are accessible throughout the program<br>
+      ✔ Nonlocal works only in nested functions<br>
+      ✔ Built-in scope is always available
+    </p>
+  </div>
+
+</div>
+
+<!-- ================= AUTH & LOGOUT ================= -->
+<script>
+const API = "http://127.0.0.1:5000";
+
+/* AUTH CHECK */
+fetch(API + "/dashboard", { credentials: "include" })
+.then(res => {
+  if(res.ok){
+    document.getElementById("profile").style.display = "flex";
+  } else {
+    window.location.href = "home.html";
+  }
+})
+.catch(() => window.location.href = "home.html");
+
+/* LOGOUT */
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => {
+    window.location.href = "home.html";
+  });
+}
+</script>
+
+</body>
+</html>

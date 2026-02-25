@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Aliasing in Python</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+}
+
+/* NAV */
+nav{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  font-size:14px;
+  color:#374151;
+  cursor:pointer;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* CONTENT */
+.container{
+  max-width:900px;
+  margin:50px auto;
+  background:white;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.container h3{
+  margin-bottom:15px;
+  font-size:26px;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section h4{
+  margin-bottom:10px;
+  font-size:18px;
+  color:#2563eb;
+}
+
+.section p{
+  line-height:1.7;
+  font-size:15px;
+}
+
+/* CODE */
+pre{
+  background:#111827;
+  color:#e5e7eb;
+  padding:20px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin-top:10px;
+}
+
+code{
+  font-family:Consolas, monospace;
+  font-size:14px;
+}
+
+/* OUTPUT */
+.output{
+  background:#f9fafb;
+  border:1px solid #d1d5db;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+  font-family:Consolas, monospace;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Student">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+
+  <h3>Aliasing in Python</h3>
+
+  <div class="section">
+    <h4>What is Aliasing?</h4>
+    <p>
+      <strong>Aliasing</strong> occurs when two or more variables
+      refer to the <strong>same object</strong> in memory.
+      Any modification through one variable
+      affects the same object.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Aliasing with Mutable Objects</h4>
+    <p>
+      Aliasing is commonly seen with mutable objects like lists.
+      Assignment copies the reference, not the object itself.
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Example: Aliasing with List</h4>
+    <pre><code>
+list1 = [10, 20, 30]
+list2 = list1
+
+list2[1] = 50
+
+print(list1)
+print(list2)
+    </code></pre>
+
+    <div class="output">
+      [10, 50, 30]<br>
+      [10, 50, 30]
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>Why Does Aliasing Occur?</h4>
+    <p>
+      ✔ Assignment copies references<br>
+      ✔ Both variables point to the same memory<br>
+      ✔ Changes reflect everywhere
+    </p>
+  </div>
+
+  <div class="section">
+    <h4>Important Points</h4>
+    <p>
+      ✔ Common with mutable objects<br>
+      ✔ Can cause unexpected bugs<br>
+      ✔ Use copy() or slicing to avoid aliasing<br>
+      ✔ Understanding aliasing is crucial for data safety
+    </p>
+  </div>
+
+</div>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+fetch(API + "/dashboard", { credentials: "include" })
+.then(res => {
+  if(res.ok){
+    document.getElementById("profileMenu").style.display = "flex";
+  }
+});
+
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => {
+    window.location.href = "home.html";
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Course Contents</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+  font-weight:700;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+  color:#374151;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* MAIN */
+.container{
+  max-width:1000px;
+  margin:60px auto;
+  padding:0 20px;
+}
+
+.container h3{
+  font-size:28px;
+  margin-bottom:35px;
+  text-align:center;
+}
+
+/* COURSE CARD */
+.course-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.course-card{
+  background:white;
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
+  cursor:pointer;
+  transition:transform 0.3s, box-shadow 0.3s;
+}
+
+.course-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 25px 45px rgba(0,0,0,0.18);
+}
+
+.course-card h4{
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+.course-card p{
+  font-size:14px;
+  color:#6b7280;
+  margin-bottom:20px;
+}
+
+.course-card button{
+  padding:10px 20px;
+  border:none;
+  background:#2563eb;
+  color:white;
+  border-radius:8px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.course-card button:hover{
+  background:#1e40af;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <h3>Python Course Contents</h3>
+
+  <div class="course-list">
+    <div class="course-card" onclick="location.href='Pythonsyllabus.html'">
+      <h4>Python Programming</h4>
+      <p>
+        Learn Python fundamentals, control structures,
+        functions, OOP concepts, and practical examples.
+      </p>
+      <button>View Course</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+/* SESSION CHECK (for profile menu only) */
+fetch(API + "/dashboard", {
+  credentials: "include"
+})
+.then(res => {
+  if(res.ok){
+    document.getElementById("profileMenu").style.display = "flex";
+  }
+});
+
+/* LOGOUT */
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => window.location.href = "home.html");
+}
+</script>
+
+</body>
+</html>

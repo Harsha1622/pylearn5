@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Python Introduction Unit Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  color:#1f2937;
+}
+
+/* ================= HEADER ================= */
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+  font-weight:700;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+  color:#374151;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* ================= QUIZ ================= */
+.wrapper{
+  max-width:850px;
+  margin:60px auto;
+  padding:0 15px;
+}
+
+.quiz-card{
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.quiz-top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.question{
+  font-size:18px;
+  font-weight:600;
+  margin:25px 0;
+}
+
+.options div{
+  padding:14px 16px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border:2px solid #e5e7eb;
+  cursor:pointer;
+}
+
+.options div:hover{
+  background:#eef2ff;
+  border-color:#2563eb;
+}
+
+.selected{
+  background:#dbeafe;
+  border-color:#2563eb;
+}
+
+.buttons{
+  display:flex;
+  justify-content:space-between;
+  margin-top:30px;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:white;
+  cursor:pointer;
+}
+
+button:disabled{
+  background:#9ca3af;
+}
+
+.result{
+  margin-top:30px;
+}
+
+.wrong{
+  background:#fee2e2;
+  border-left:6px solid #dc2626;
+  padding:18px;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
+.correct{
+  background:#dcfce7;
+  border-left:6px solid #16a34a;
+  padding:18px;
+  border-radius:10px;
+}
+
+.explain{
+  font-size:14px;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="wrapper">
+  <div class="quiz-card">
+
+    <div class="quiz-top">
+      <h3>Python – Introduction Unit Test</h3>
+      <div id="progress"></div>
+    </div>
+
+    <div id="quizArea">
+      <div class="question" id="questionText"></div>
+      <div class="options" id="options"></div>
+
+      <div class="buttons">
+        <button id="prevBtn" onclick="prevQ()">Previous</button>
+        <button id="nextBtn" onclick="nextQ()">Next</button>
+      </div>
+    </div>
+
+    <div id="result" class="result"></div>
+
+  </div>
+</div>
+
+<script>
+/* ================= BACKEND ================= */
+const API = "http://127.0.0.1:5000";
+
+fetch(API + "/dashboard", { credentials:"include" })
+.then(res=>{
+  if(res.ok){
+    document.getElementById("profileMenu").style.display="flex";
+  }
+});
+
+function logout(){
+  fetch(API + "/logout", {
+    method:"POST",
+    credentials:"include"
+  }).then(()=>window.location.href="home.html");
+}
+
+/* ================= QUIZ DATA ================= */
+const quiz = [
+  {q:"Who developed Python?",o:["Guido van Rossum","Dennis Ritchie","James Gosling"],a:0,e:"Python was developed by Guido van Rossum."},
+  {q:"Python was released in which year?",o:["1989","1991","1995"],a:1,e:"Python was released in 1991."},
+  {q:"Python is a ____ level language.",o:["Low","Middle","High"],a:2,e:"Python is a high-level language."},
+  {q:"Which feature improves Python readability?",o:["Pointers","Indentation","Macros"],a:1,e:"Indentation improves readability."},
+  {q:"Python supports which programming style?",o:["Procedural","Object-oriented","Both"],a:2,e:"Python supports both paradigms."},
+
+  {q:"Python is widely used for?",o:["Web development","Data science","Both"],a:2,e:"Python is used in both areas."},
+  {q:"Which tool is used to write Python programs?",o:["IDE","Assembler","Loader"],a:0,e:"IDE is used to write programs."},
+  {q:"Python file extension is?",o:[".pt",".py",".p"],a:1,e:".py is the correct extension."},
+  {q:"Which is NOT a Python IDE?",o:["IDLE","PyCharm","Turbo C"],a:2,e:"Turbo C is for C language."},
+  {q:"Which is a valid Python identifier?",o:["1var","var_1","var-1"],a:1,e:"Identifiers may contain underscore."},
+
+  {q:"Identifiers cannot start with?",o:["Letter","Digit","_"],a:1,e:"Identifiers cannot start with digits."},
+  {q:"Which of the following is a keyword?",o:["print","if","input"],a:1,e:"if is a keyword."},
+  {q:"Keywords in Python are?",o:["Reserved words","User-defined words","Dynamic words"],a:0,e:"Keywords are reserved words."},
+  {q:"Variables are used to?",o:["Store data","Delete data","Compile data"],a:0,e:"Variables store data."},
+  {q:"Variable declaration required in Python?",o:["Yes","No","Sometimes"],a:1,e:"Python does not need declaration."},
+
+  {q:"Indentation in Python is?",o:["Optional","Mandatory","Ignored"],a:1,e:"Indentation is mandatory."},
+  {q:"Which data type stores integers?",o:["float","int","str"],a:1,e:"int stores integers."},
+  {q:"Which data type stores decimals?",o:["int","float","bool"],a:1,e:"float stores decimals."},
+  {q:"Boolean values are?",o:["0 & 1","True & False","Yes & No"],a:1,e:"Boolean values are True and False."},
+  {q:"Which symbol is used for comments?",o:["//","#","/*"],a:1,e:"# is used for comments."},
+
+  {q:"Which operator performs addition?",o:["=","+","=="],a:1,e:"+ performs addition."},
+  {q:"Which operator compares values?",o:["=","==","+="],a:1,e:"== compares values."},
+  {q:"Which has highest precedence?",o:["*","+","()"],a:2,e:"Parentheses have highest precedence."},
+  {q:"Result of 5 > 3?",o:["True","False","Error"],a:0,e:"5 > 3 is True."},
+  {q:"Python is an example of?",o:["Compiler-based","Interpreter-based","Assembler"],a:1,e:"Python is interpreter-based."}
+];
+
+let cur=0;
+let ans=new Array(quiz.length).fill(null);
+
+function load(){
+  progress.innerText=`Question ${cur+1} of ${quiz.length}`;
+  questionText.innerText=`${cur+1}. ${quiz[cur].q}`;
+  options.innerHTML=quiz[cur].o.map((op,i)=>
+    `<div class="${ans[cur]===i?'selected':''}" onclick="selectOpt(${i})">${op}</div>`
+  ).join("");
+  prevBtn.disabled=cur===0;
+  nextBtn.innerText=cur===quiz.length-1?"Submit":"Next";
+}
+
+function selectOpt(i){
+  ans[cur]=i;
+  load();
+}
+
+function nextQ(){
+  if(cur===quiz.length-1){
+    if(ans.includes(null)){
+      alert("Please answer all questions");
+      return;
+    }
+    showResult();
+  } else {
+    cur++;
+    load();
+  }
+}
+
+function prevQ(){
+  cur--;
+  load();
+}
+
+function showResult(){
+  let score=0;
+  let out="";
+  quiz.forEach((q,i)=>{
+    if(ans[i]===q.a) score++;
+    else out+=`
+      <div class="wrong">
+        <strong>Question:</strong> ${q.q}<br>
+        <strong>Your Answer:</strong> ${q.o[ans[i]]}<br>
+        <strong>Correct Answer:</strong> ${q.o[q.a]}
+        <div class="explain"><strong>Explanation:</strong> ${q.e}</div>
+      </div>`;
+  });
+  quizArea.style.display="none";
+  result.innerHTML=
+    `<h3>Your Score: ${score} / ${quiz.length}</h3>` +
+    (out || `<div class="correct">Excellent! All answers are correct 🎉</div>`) +
+    `<br><button onclick="location.reload()">Restart Quiz</button>`;
+}
+
+load();
+</script>
+
+</body>
+</html>

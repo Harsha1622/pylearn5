@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | My Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f3f6fb;
+  color:#1f2937;
+}
+
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+  font-weight:700;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:48px;
+  right:0;
+  background:white;
+  border-radius:10px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:180px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+main{
+  max-width:900px;
+  margin:50px auto;
+  background:white;
+  padding:35px;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.profile-header{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-bottom:30px;
+}
+
+.profile-header img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+}
+
+.info-box{
+  background:#f9fafb;
+  padding:15px;
+  border-radius:8px;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div class="profile-header">
+    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+    <div>
+      <h3 id="studentName">Loading...</h3>
+      <p id="studentEmail"></p>
+    </div>
+  </div>
+
+  <div class="info-box" id="courseName">
+    Course: Python Programming
+  </div>
+
+</main>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+/* SESSION CHECK + LOAD DATA */
+fetch(API + "/dashboard", {
+  credentials: "include"
+})
+.then(res => {
+  if(!res.ok){
+    window.location.href = "home.html";
+    return;
+  }
+  return res.json();
+})
+.then(data => {
+  document.getElementById("profileMenu").style.display = "flex";
+
+  document.getElementById("studentEmail").innerText = data.email;
+
+  if(data.profile){
+    document.getElementById("studentName").innerText =
+      data.profile.full_name || "Student";
+
+    document.getElementById("courseName").innerText =
+      "Course: " + (data.profile.course || "Python Programming");
+  }
+});
+
+/* LOGOUT */
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => window.location.href = "home.html");
+}
+</script>
+
+</body>
+</html>

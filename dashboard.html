@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body{
+  background:#f5f7fb;
+  color:#1f2937;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 4px 8px rgba(0,0,0,0.08);
+}
+
+header h2{
+  color:#2563eb;
+  font-weight:700;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#374151;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#2563eb;
+}
+
+/* PROFILE */
+.profile{
+  display:none;
+  align-items:center;
+  gap:8px;
+  position:relative;
+  cursor:pointer;
+}
+
+.profile img{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+}
+
+.profile-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  width:170px;
+  display:none;
+  flex-direction:column;
+}
+
+.profile-menu a,
+.profile-menu button{
+  padding:12px 15px;
+  background:none;
+  border:none;
+  text-align:left;
+  font-size:14px;
+  cursor:pointer;
+  color:#374151;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover{
+  background:#f3f4f6;
+}
+
+.profile:hover .profile-menu{
+  display:flex;
+}
+
+/* MAIN */
+main{
+  max-width:1000px;
+  margin:50px auto;
+  padding:35px;
+  background:white;
+  border-radius:14px;
+  box-shadow:0 18px 35px rgba(0,0,0,0.12);
+}
+
+.dashboard-title{
+  font-size:26px;
+  margin-bottom:30px;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.stat-card{
+  background:#f9fafb;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat-card h3{
+  font-size:24px;
+  color:#2563eb;
+}
+
+.stat-card p{
+  font-size:14px;
+  color:#6b7280;
+}
+
+/* SECTION */
+section{
+  margin-top:40px;
+}
+
+section h4{
+  font-size:18px;
+  color:#2563eb;
+  margin-bottom:15px;
+}
+
+/* PROGRESS */
+.progress-box{
+  background:#f9fafb;
+  padding:15px;
+  border-radius:8px;
+}
+
+.progress-bar{
+  height:8px;
+  background:#e5e7eb;
+  border-radius:5px;
+  margin-top:6px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:#2563eb;
+  border-radius:5px;
+  transition:width 0.6s ease;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.action-btn{
+  padding:12px 20px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.action-btn:hover{
+  background:#1e40af;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  main{
+    margin:30px 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div class="dashboard-title">Python Learning Dashboard</div>
+
+  <div class="stats">
+    <div class="stat-card">
+      <h3 id="topicCount">0</h3>
+      <p>Topics Completed</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="quizCount">0</h3>
+      <p>Quizzes Attempted</p>
+    </div>
+    <div class="stat-card">
+      <h3 id="avgScore">0%</h3>
+      <p>Average Score</p>
+    </div>
+  </div>
+
+  <section>
+    <h4>Python Learning Progress</h4>
+    <div class="progress-box">
+      <span id="progressText">Python Programming – 0%</span>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h4>Quick Actions</h4>
+    <div class="actions">
+      <button class="action-btn">Continue Learning</button>
+      <button class="action-btn" onclick="location.href='profile.html'">View Profile</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+/* SESSION CHECK */
+fetch(API + "/dashboard", {
+  credentials: "include"
+})
+.then(res => {
+  if(!res.ok){
+    window.location.href = "home.html";
+    return;
+  }
+  return res.json();
+})
+.then(data => {
+  document.getElementById("profileMenu").style.display = "flex";
+
+  // Placeholder values (can be extended later)
+  document.getElementById("topicCount").innerText = 0;
+  document.getElementById("quizCount").innerText = 0;
+  document.getElementById("avgScore").innerText = "0%";
+
+  document.getElementById("progressText").innerText =
+    "Python Programming – 0%";
+
+  document.getElementById("progressFill").style.width = "0%";
+});
+
+/* LOGOUT */
+function logout(){
+  fetch(API + "/logout", {
+    method: "POST",
+    credentials: "include"
+  }).then(() => window.location.href = "home.html");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyLearn | Functions and Modules Unit Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===== SAME CSS – UNCHANGED ===== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f5f7fb;color:#1f2937;}
+header{background:white;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 8px rgba(0,0,0,0.08);}
+header h2{color:#2563eb;font-weight:700;}
+nav{display:flex;align-items:center;gap:25px;}
+nav a{text-decoration:none;color:#374151;font-weight:500;}
+nav a:hover{color:#2563eb;}
+.profile{display:none;align-items:center;gap:8px;position:relative;cursor:pointer;}
+.profile img{width:34px;height:34px;border-radius:50%;}
+.profile-menu{position:absolute;top:45px;right:0;background:white;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.15);width:170px;display:none;flex-direction:column;}
+.profile-menu a,.profile-menu button{padding:12px 15px;background:none;border:none;text-align:left;font-size:14px;cursor:pointer;color:#374151;}
+.profile-menu a:hover,.profile-menu button:hover{background:#f3f4f6;}
+.profile:hover .profile-menu{display:flex;}
+.wrapper{max-width:850px;margin:60px auto;padding:0 15px;}
+.quiz-card{background:white;padding:35px;border-radius:18px;box-shadow:0 18px 35px rgba(0,0,0,0.12);}
+.quiz-top{display:flex;justify-content:space-between;margin-bottom:20px;}
+.question{font-size:18px;font-weight:600;margin:25px 0;}
+.options div{padding:14px 16px;margin-bottom:12px;border-radius:12px;border:2px solid #e5e7eb;cursor:pointer;}
+.options div:hover{background:#eef2ff;border-color:#2563eb;}
+.selected{background:#dbeafe;border-color:#2563eb;}
+.buttons{display:flex;justify-content:space-between;margin-top:30px;}
+button{padding:12px 30px;border:none;border-radius:12px;background:linear-gradient(135deg,#2563eb,#4f46e5);color:white;cursor:pointer;}
+button:disabled{background:#9ca3af;}
+.result{margin-top:30px;}
+.wrong{background:#fee2e2;border-left:6px solid #dc2626;padding:18px;border-radius:10px;margin-bottom:15px;}
+.correct{background:#dcfce7;border-left:6px solid #16a34a;padding:18px;border-radius:10px;}
+.explain{font-size:14px;margin-top:6px;}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>PyLearn</h2>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="course.html">Courses</a>
+    <div class="profile" id="profileMenu">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+      <div class="profile-menu">
+        <a href="profile.html">My Profile</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="wrapper">
+  <div class="quiz-card">
+
+    <div class="quiz-top">
+      <h3>Python – Functions & Modules Unit Test</h3>
+      <div id="progress"></div>
+    </div>
+
+    <div id="quizArea">
+      <div class="question" id="questionText"></div>
+      <div class="options" id="options"></div>
+
+      <div class="buttons">
+        <button id="prevBtn" onclick="prevQ()">Previous</button>
+        <button id="nextBtn" onclick="nextQ()">Next</button>
+      </div>
+    </div>
+
+    <div id="result" class="result"></div>
+  </div>
+</div>
+
+<script>
+const API="http://127.0.0.1:5000";
+fetch(API+"/dashboard",{credentials:"include"})
+.then(r=>{if(r.ok)profileMenu.style.display="flex";});
+function logout(){
+  fetch(API+"/logout",{method:"POST",credentials:"include"})
+  .then(()=>location.href="home.html");
+}
+
+/* ===== FUNCTIONS & MODULES QUESTIONS ===== */
+const quiz=[
+{q:"What is a function in Python?",o:["Block of reusable code","Data type","Loop"],a:0,e:"Functions are reusable blocks of code."},
+{q:"Which keyword is used to define a function?",o:["function","def","fun"],a:1,e:"Functions are defined using def."},
+{q:"Function parameters are written in?",o:["{}","[]","()"],a:2,e:"Parameters are inside parentheses."},
+{q:"Which statement returns a value from a function?",o:["break","return","yield"],a:1,e:"return sends value back."},
+{q:"If no return is used, function returns?",o:["0","None","Error"],a:1,e:"Default return value is None."},
+
+{q:"Built-in function example?",o:["add()","print()","myFunc()"],a:1,e:"print() is built-in."},
+{q:"Which is user-defined function?",o:["len()","sum()","add()"],a:2,e:"add() is user-defined."},
+{q:"Function call means?",o:["Defining function","Executing function","Deleting function"],a:1,e:"Calling executes function."},
+{q:"Arguments are passed during?",o:["Definition","Execution","Import"],a:1,e:"Arguments are passed while calling."},
+{q:"Which argument type uses name=value?",o:["Positional","Keyword","Default"],a:1,e:"Keyword arguments use name=value."},
+
+{q:"*args represents?",o:["Tuple","List","Dictionary"],a:0,e:"*args collects values as tuple."},
+{q:"**kwargs represents?",o:["List","Tuple","Dictionary"],a:2,e:"**kwargs stores key-value pairs."},
+{q:"Lambda function is?",o:["Named","Anonymous","Recursive"],a:1,e:"Lambda functions are anonymous."},
+{q:"Lambda keyword is used for?",o:["Loops","Short functions","Modules"],a:1,e:"Used for short functions."},
+{q:"Lambda can contain how many expressions?",o:["One","Two","Unlimited"],a:0,e:"Lambda allows only one expression."},
+
+{q:"What is a module?",o:["Package","Python file","Function"],a:1,e:"A module is a Python file."},
+{q:"Module file extension is?",o:[".mod",".py",".txt"],a:1,e:"Modules use .py extension."},
+{q:"Which statement imports entire module?",o:["import math","from math","include math"],a:0,e:"import math imports full module."},
+{q:"Which imports only specific function?",o:["import math","from math import sqrt","import sqrt"],a:1,e:"Specific import uses from-import."},
+{q:"Alias in import is used to?",o:["Rename module","Delete module","Compile module"],a:0,e:"Alias shortens module name."},
+
+{q:"reduce() belongs to which module?",o:["math","functools","sys"],a:1,e:"reduce() is in functools."},
+{q:"map() function does?",o:["Filters","Transforms","Combines"],a:1,e:"map transforms elements."},
+{q:"filter() function does?",o:["Maps","Filters","Reduces"],a:1,e:"filter selects elements."},
+{q:"reduce() function returns?",o:["List","Tuple","Single value"],a:2,e:"reduce returns single value."},
+{q:"Main advantage of modules?",o:["Speed","Reusability","Syntax"],a:1,e:"Modules improve reusability."}
+];
+
+let cur=0;
+let ans=new Array(quiz.length).fill(null);
+
+function load(){
+  progress.innerText=`Question ${cur+1} of ${quiz.length}`;
+  questionText.innerText=`${cur+1}. ${quiz[cur].q}`;
+  options.innerHTML=quiz[cur].o.map((op,i)=>
+    `<div class="${ans[cur]===i?'selected':''}" onclick="selectOpt(${i})">${op}</div>`
+  ).join("");
+  prevBtn.disabled=cur===0;
+  nextBtn.innerText=cur===quiz.length-1?"Submit":"Next";
+}
+
+function selectOpt(i){ans[cur]=i;load();}
+function nextQ(){
+  if(cur===quiz.length-1){
+    if(ans.includes(null)){alert("Answer all questions");return;}
+    showResult();
+  } else {cur++;load();}
+}
+function prevQ(){cur--;load();}
+function showResult(){
+  let score=0,out="";
+  quiz.forEach((q,i)=>{
+    if(ans[i]===q.a)score++;
+    else out+=`
+    <div class="wrong">
+      <strong>Question:</strong> ${q.q}<br>
+      <strong>Your Answer:</strong> ${q.o[ans[i]]}<br>
+      <strong>Correct Answer:</strong> ${q.o[q.a]}
+      <div class="explain"><strong>Explanation:</strong> ${q.e}</div>
+    </div>`;
+  });
+  quizArea.style.display="none";
+  result.innerHTML=
+    `<h3>Your Score: ${score} / ${quiz.length}</h3>`+
+    (out||`<div class="correct">Excellent! All answers correct 🎉</div>`) +
+    `<br><button onclick="location.reload()">Restart Quiz</button>`;
+}
+load();
+</script>
+
+</body>
+</html>
